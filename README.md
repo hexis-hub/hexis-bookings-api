@@ -1,2 +1,22 @@
-# hexis-bookings-api
-API to handle our internal shared items bookings like books, games and more.
+# Hexis Bookings API
+API to handle our internal shared items like books, games and more.
+
+## Note
+Currently under development
+
+## Stack
+- golang
+- encoding/json
+- github.com/gorilla/mux
+- github.com/satori/go.uuid
+- time
+- log
+- net/http
+
+## How to run
+```golang
+go build main.go
+go run main.go
+```
+
+After that, you can open the Browser or try with the postman hiting the `http://localhost:3000` where the API will be served.
