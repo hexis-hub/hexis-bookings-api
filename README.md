@@ -6,12 +6,12 @@ Currently under development
 
 ## Stack
 - golang
+- glide 
 - encoding/json
 - github.com/gorilla/mux
 - github.com/satori/go.uuid
 - time
 - log
-- net/http
 
 ## How to run
 ```golang
