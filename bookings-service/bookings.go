@@ -33,13 +33,12 @@ type Item struct {
 
 var items = []*Item{}
 var bookings []Booking
-
+var itemUID = uuid.NewV4()
+var userUID = uuid.NewV4()
+var bookingUID = uuid.NewV4()
 // GetBookings - Retrieves all bookings
 func GetBookings(w http.ResponseWriter, r *http.Request) {
 	// Generating unique ids for mocked data
-	itemUID := uuid.NewV4()
-	userUID := uuid.NewV4()
-	bookingUID := uuid.NewV4()
 	items := append(items, &Item{
 		UUID:       itemUID,
 		Name:       "ES6 & Beyond",
