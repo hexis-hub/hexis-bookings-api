@@ -1,11 +1,13 @@
-package bookings
+package main
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
-	uuid "github.com/satori/go.uuid"
+	"log"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/satori/go.uuid"
 )
 
 // Booking structure
@@ -31,30 +33,11 @@ type Item struct {
 	ReturnAt   string    `json:"returnAt,omitempty"`
 }
 
-var items = []*Item{}
 var bookings []Booking
 
 // GetBookings - Retrieves all bookings
 func GetBookings(w http.ResponseWriter, r *http.Request) {
-	// Generating unique ids for mocked data
-	itemUID := uuid.NewV4()
-	userUID := uuid.NewV4()
-	bookingUID := uuid.NewV4()
-	items := append(items, &Item{
-		UUID:       itemUID,
-		Name:       "ES6 & Beyond",
-		Type:       "book",
-		PickedUpAt: time.Now().String(),
-		ReturnAt:   time.Now().String(),
-	})
-
-	user := &User{UUID: userUID, Name: "Mark Ruffalo", Email: "hulk@smash.it"}
-
-	bookings := append(bookings, Booking{UUID: bookingUID, User: user, Items: items})
-
 	json.NewEncoder(w).Encode(bookings)
-
-	return
 }
 
 // GetBooking - Retrieves a single booking
@@ -67,17 +50,15 @@ func GetBooking(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	json.NewEncoder(w).Encode(&Booking{})
-	return
 }
 
 // CreateBooking - Create a booking
 func CreateBooking(w http.ResponseWriter, r *http.Request) {
 	var booking Booking
 	_ = json.NewDecoder(r.Body).Decode(&booking)
-	booking.UUID = uuid.NewV4()
+	booking.UUID, _ = uuid.NewV4()
 	bookings = append(bookings, booking)
 	json.NewEncoder(w).Encode(booking)
-	return
 }
 
 // DeleteBooking - Delete a booking
@@ -90,5 +71,31 @@ func DeleteBooking(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewEncoder(w).Encode(bookings)
 	}
-	return
+}
+
+func main() {
+	router := mux.NewRouter()
+	items := []*Item{}
+	// Generating unique ids for mocked data
+	itemUID, _ := uuid.NewV4()
+	userUID, _ := uuid.NewV4()
+	bookingUID, _ := uuid.NewV4()
+
+	items = append(items, &Item{
+		UUID:       itemUID,
+		Name:       "ES6 & Beyond",
+		Type:       "book",
+		PickedUpAt: time.Now().String(),
+		ReturnAt:   time.Now().String(),
+	})
+
+	user := &User{UUID: userUID, Name: "Mark Ruffalo", Email: "hulk@smash.it"}
+
+	bookings = append(bookings, Booking{UUID: bookingUID, User: user, Items: items})
+
+	router.HandleFunc("/bookings", GetBookings).Methods("GET")
+	router.HandleFunc("/bookings/{id}", GetBooking).Methods("GET")
+	router.HandleFunc("/bookings/{id}", CreateBooking).Methods("POST")
+	router.HandleFunc("/bookings/{id}", DeleteBooking).Methods("DELETE")
+	log.Fatal(http.ListenAndServe(":3000", router))
 }
