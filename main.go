@@ -80,8 +80,10 @@ func main() {
         PickedUpAt: time.Now().String(),
         ReturnAt: time.Now().String(),
     })
+
+    user := &User{ UUID: userUID, Name: "Mark Ruffalo", Email: "hulk@smash.it"}
     
-    bookings = append(bookings, Booking{ UUID: bookingUID, User: &User{ UUID: userUID, Name: "Mark Ruffalo", Email: "hulk@smash.it"}, Items: items })
+    bookings = append(bookings, Booking{ UUID: bookingUID, User: user, Items: items })
     
     router.HandleFunc("/bookings", GetBookings).Methods("GET")
     router.HandleFunc("/bookings/{id}", GetBooking).Methods("GET")
