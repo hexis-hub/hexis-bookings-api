@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/hexis-hub/hexis-bookings-api)](https://goreportcard.com/report/github.com/hexis-hub/hexis-bookings-api)
+
 # Hexis Bookings API
 API to handle our internal shared items like books, games and more.
 
@@ -6,10 +8,10 @@ Currently under development
 
 ## Stack
 - golang
-- glide 
+- dep
 - encoding/json
 - github.com/gorilla/mux
-- github.com/satori/go.uuid
+- github.com/google/uuid
 - time
 - log
 
@@ -17,7 +19,7 @@ Currently under development
 ```javascript
 
 // Locally
-
+dep ensure // for dependencies if never installed
 go build main.go
 go run main.go
 
